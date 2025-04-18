@@ -1,0 +1,414 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{fontawesome5}
+
+% Define colors
+\definecolor{titlecolor}{RGB}{70, 130, 180} % Steel Blue
+\definecolor{sectioncolor}{RGB}{0, 102, 204} % Royal Blue
+\definecolor{subsectioncolor}{RGB}{0, 153, 153} % Teal
+\definecolor{subsubsectioncolor}{RGB}{102, 102, 153} % Slate Blue
+\definecolor{linkcolor}{RGB}{0, 102, 204} % Royal Blue for links
+\definecolor{citecolor}{RGB}{0, 153, 0} % Green for citations
+\definecolor{urlcolor}{RGB}{102, 0, 153} % Purple for URLs
+\definecolor{boxcolor}{RGB}{240, 248, 255} % Alice Blue for boxes
+\definecolor{codecolor}{RGB}{245, 245, 245} % Light gray for code
+
+% Page geometry
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+    top=20mm,
+}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkcolor,
+    filecolor=citecolor,
+    urlcolor=urlcolor,
+    pdftitle={Problem Solving Report},
+    pdfauthor={Oussama GUELFAA},
+    pdfsubject={Artificial Intelligence},
+    pdfkeywords={AI, Search Algorithms, Problem Solving},
+    pdfproducer={LaTeX},
+    pdfcreator={LaTeX},
+}
+
+% Title formatting
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sectioncolor}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{subsectioncolor}}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{subsubsectioncolor}}
+  {\thesubsubsection}{1em}{}
+
+% Header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{sectioncolor}{Problem Solving Techniques}}
+\fancyhead[R]{\textcolor{sectioncolor}{\thepage}}
+\fancyfoot[C]{\textcolor{subsectioncolor}{Oussama GUELFAA}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Custom environments
+\newenvironment{infobox}[1]
+  {\begin{tcolorbox}[colback=boxcolor,colframe=sectioncolor,title=#1,fonttitle=\bfseries]}
+  {\end{tcolorbox}}
+
+% Code listing style
+\lstset{
+    backgroundcolor=\color{codecolor},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{green!60!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=5pt,
+    frame=single,
+    framesep=5pt,
+    rulecolor=\color{black!30},
+    tabsize=4,
+    showspaces=false,
+    showstringspaces=false
+}
+
+% Custom title page command
+\newcommand{\customtitlepage}{
+    \begin{titlepage}
+        \begin{center}
+            \vspace*{1cm}
+
+            \begin{tikzpicture}
+                \fill[color=titlecolor!20] (0,0) rectangle (\textwidth,2cm);
+                \node[anchor=center, font=\Huge\bfseries, text=titlecolor] at (\textwidth/2,1cm) {Problem Solving Techniques};
+            \end{tikzpicture}
+
+            \vspace{0.5cm}
+            {\Large\textcolor{sectioncolor}{\textbf{in Artificial Intelligence}}}\\
+            \vspace{0.5cm}
+            {\large\textcolor{subsectioncolor}{Implementation of Search Algorithms}}\\
+
+            \vspace{1.5cm}
+
+            \begin{tikzpicture}
+                \fill[color=boxcolor] (0,0) rectangle (\textwidth,10cm);
+                \draw[color=sectioncolor, line width=2pt] (0,0) rectangle (\textwidth,10cm);
+
+                \node[anchor=center, font=\Large\bfseries, text=sectioncolor] at (\textwidth/2,9cm) {Practical Work Report};
+
+                \node[anchor=center, font=\large] at (\textwidth/2,7cm) {\faUser\ Prepared by:};
+                \node[anchor=center, font=\large\bfseries, text=subsectioncolor] at (\textwidth/2,6cm) {Oussama GUELFAA};
+
+                \node[anchor=center, font=\large] at (\textwidth/2,4.5cm) {\faChalkboardTeacher\ Supervised by:};
+                \node[anchor=center, font=\large\bfseries, text=subsectioncolor] at (\textwidth/2,3.5cm) {KASSI Somlawa Mihia};
+
+                \node[anchor=center, font=\large] at (\textwidth/2,2cm) {\faCalendarAlt\ Date:};
+                \node[anchor=center, font=\large\bfseries, text=subsectioncolor] at (\textwidth/2,1cm) {\today};
+            \end{tikzpicture}
+
+            \vfill
+
+            \begin{tikzpicture}
+                \fill[color=titlecolor!20] (0,0) rectangle (\textwidth,1cm);
+                \node[anchor=center, font=\large, text=sectioncolor] at (\textwidth/2,0.5cm) {École des Mines de Saint-Étienne};
+            \end{tikzpicture}
+        \end{center}
+    \end{titlepage}
+}
+
+\begin{document}
+
+\customtitlepage
+
+\tableofcontents
+
+\newpage
+
+
+
+\section{Exercise 1: Depth-First Search}
+
+\begin{infobox}{What is Depth-First Search?}
+Depth-First Search is a graph traversal algorithm that explores as far as possible along each branch before backtracking. It uses a stack data structure to keep track of nodes to visit next.
+\end{infobox}
+
+The first exercise involved implementing and testing the Depth-First Search algorithm. This section details the approach taken and the implementation details.
+
+
+
+\subsection{Testing the Depth-First Search}
+
+To test the Depth-First Search algorithm, the \texttt{SimpleTest} class was completed to create a problem instance, solve it using the Depth-First Search algorithm, and display the solution path. When run, this test successfully found a path from the initial state (A) to the goal state (H) using Depth-First Search. The solution path was A → C → D → G → H, with a total path cost of 4.0 (since each edge in the SimpleOrientedGraphProblem has a cost of 1).
+
+\section{Exercise 2: Uniform Cost Search}
+
+\begin{infobox}{What is Uniform Cost Search?}
+Uniform Cost Search is a graph search algorithm that finds the path with the lowest total cost from the start node to the goal. It expands nodes in order of their path cost, using a priority queue to select the next node to expand.
+\end{infobox}
+
+The second exercise involved implementing the Uniform Cost Search algorithm, which explores nodes in order of increasing path cost. This section details the approach taken and the implementation details.
+
+\subsection{Creating a New Package}
+
+A new package \texttt{fr.emse.ai.search.uniform} was created to contain the classes for the Uniform Cost Search implementation. This package includes:
+
+\begin{itemize}
+    \item \texttt{UniformCostProblem}: A class that implements the Problem interface for a graph with weighted edges.
+    \item \texttt{UniformCostSearch}: A class that extends AbstractTreeSearch to implement the Uniform Cost Search algorithm.
+    \item \texttt{UniformCostTest}: A test class to demonstrate the Uniform Cost Search algorithm.
+    \item \texttt{ComparisonTest}: A test class that compares Depth-First Search and Uniform Cost Search.
+\end{itemize}
+
+\subsection{Implementation of UniformCostProblem}
+
+The \texttt{UniformCostProblem} class implements the Problem interface for a graph with weighted edges. The key aspects of this implementation are:
+
+\begin{itemize}
+    \item It uses a nested HashMap to store the costs between states.
+    \item The outer map has the source state as the key and another map as the value.
+    \item The inner map has the destination state as the key and the cost as the value.
+    \item This allows for efficient lookup of the cost between any two states.
+    \item The graph structure is the same as in the SimpleOrientedGraphProblem, but with varying edge costs.
+\end{itemize}
+
+\subsection{Implementation of UniformCostSearch}
+
+The \texttt{UniformCostSearch} class extends \texttt{AbstractTreeSearch} to implement the Uniform Cost Search algorithm. The key aspects of this implementation are:
+
+\begin{itemize}
+    \item It uses an ArrayList for the frontier.
+    \item The \texttt{chooseLeafNode} method selects the node with the minimum path cost.
+    \item This ensures that nodes are explored in order of increasing path cost, which is the defining characteristic of Uniform Cost Search.
+\end{itemize}
+
+\subsection{Testing the Uniform Cost Search}
+
+To test the Uniform Cost Search algorithm, the \texttt{UniformCostTest} class was created to create a problem instance, solve it using the Uniform Cost Search algorithm, and display the solution path. When run, this test successfully found a path from the initial state (A) to the goal state (H) using Uniform Cost Search. The solution path was A → C → D → G → H, with a total path cost of 7.0 (since the edges in the UniformCostProblem have varying costs).
+
+\section{Exercise 3: Best First Search}
+
+\begin{infobox}{What is Best First Search?}
+Best First Search is an informed search algorithm that uses a heuristic function to determine which nodes to explore first. It selects nodes based on an estimate of how close they are to the goal, rather than the cost of reaching them from the start.
+\end{infobox}
+
+The third exercise involved implementing the Best First Search algorithm, which uses heuristic values to guide the search toward the goal. This section details the approach taken and the implementation details.
+
+\subsection{Creating the HeuristicState Class}
+
+A key requirement for the Best First Search algorithm is a heuristic function that estimates the cost to reach the goal from a given state. To implement this, a new class called \texttt{HeuristicState} was created that inherits from \texttt{SimpleState} and adds heuristic values for each state.
+
+The \texttt{HeuristicState} class has the following key features:
+
+\begin{itemize}
+    \item It inherits from \texttt{SimpleState}, retaining all its functionality.
+    \item It defines static int values for each node in the graph, representing the heuristic values.
+    \item It implements a \texttt{getHValue()} method that returns the heuristic value for the current state.
+    \item Lower heuristic values indicate states that are closer to the goal.
+    \item The goal state (H) has a heuristic value of 0.
+\end{itemize}
+
+\subsection{Implementation of BestFirstProblem}
+
+The \texttt{BestFirstProblem} class implements the Problem interface for use with the Best First Search algorithm. The key aspects of this implementation are:
+
+\begin{itemize}
+    \item It uses \texttt{HeuristicState} objects to represent states with heuristic values.
+    \item The \texttt{isGoal} method returns true when the heuristic value of the state is 0.
+    \item The graph structure is the same as in the previous exercises, but now with heuristic values for each state.
+\end{itemize}
+
+\subsection{Implementation of BestFirstSearch}
+
+The \texttt{BestFirstSearch} class extends \texttt{AbstractTreeSearch} to implement the Best First Search algorithm. The key aspects of this implementation are:
+
+\begin{itemize}
+    \item It uses an ArrayList for the frontier.
+    \item The \texttt{chooseLeafNode} method selects the node with the minimum heuristic value.
+    \item It maintains a set of visited states to ensure that only new states are added to the frontier.
+    \item The \texttt{expand} method is overridden to check if states have been visited before adding them to the frontier.
+\end{itemize}
+
+\subsection{Testing the Best First Search}
+
+To test the Best First Search algorithm, a test class was created to create a problem instance, solve it using the Best First Search algorithm, and display the solution path. When run, this test successfully found a path from the initial state (A) to the goal state (H) using Best First Search. The solution path was A → B → E → F → H, with a total path cost of 8.0.
+
+\section{Fair Comparison of Algorithms}
+
+\begin{infobox}{Why Compare Algorithms?}
+Comparing search algorithms helps us understand their strengths and weaknesses in different scenarios. A fair comparison requires using the same problem formulation for all algorithms to ensure that differences in performance are due to the algorithms themselves, not to differences in how the problem is represented.
+\end{infobox}
+
+To fairly compare the three algorithms, a common problem formulation was created that all three algorithms could use. This ensures that the comparison is based on the algorithms themselves, not on differences in the problem formulation.
+
+\subsection{Common Problem Formulation}
+
+A \texttt{CommonProblem} class was created that implements the Problem interface with the following features:
+
+\begin{itemize}
+    \item It uses \texttt{HeuristicState} objects to represent states, which include both the state value and the heuristic value.
+    \item It defines the same graph structure for all algorithms.
+    \item It uses the same edge costs for all algorithms.
+    \item It provides the same heuristic values for the Best First Search algorithm.
+\end{itemize}
+
+\subsection{Comparison Results}
+
+The three algorithms were run on the common problem formulation, and the following results were obtained:
+
+\begin{itemize}
+    \item \textcolor{sectioncolor}{\textbf{Depth-First Search}}:
+    \begin{itemize}
+        \item Solution path: \textcolor{sectioncolor}{A → C → D → G → H}
+        \item Path cost: \textcolor{sectioncolor}{7.0}
+        \item Nodes expanded: \textcolor{sectioncolor}{4}
+    \end{itemize}
+    \item \textcolor{subsectioncolor}{\textbf{Uniform Cost Search}}:
+    \begin{itemize}
+        \item Solution path: \textcolor{subsectioncolor}{A → C → D → G → H}
+        \item Path cost: \textcolor{subsectioncolor}{7.0}
+        \item Nodes expanded: \textcolor{subsectioncolor}{7}
+    \end{itemize}
+    \item \textcolor{subsubsectioncolor}{\textbf{Best First Search}}:
+    \begin{itemize}
+        \item Solution path: \textcolor{subsubsectioncolor}{A → B → E → F → H}
+        \item Path cost: \textcolor{subsubsectioncolor}{8.0}
+        \item Nodes expanded: \textcolor{subsubsectioncolor}{4}
+    \end{itemize}
+\end{itemize}
+
+Both Depth-First Search and Uniform Cost Search found the optimal path with a cost of 7.0, while Best First Search found a slightly more expensive path with a cost of 8.0. However, Best First Search was as efficient as Depth-First Search in terms of the number of nodes expanded (4), while Uniform Cost Search expanded more nodes (7).
+
+\section{Exercise 4: Bottle Problem with A* Search}
+
+\begin{infobox}{What is A* Search?}
+A* (pronounced "A-star") is an informed search algorithm that combines the advantages of Uniform Cost Search and Best First Search. It uses both the cost to reach a node (g) and a heuristic estimate of the cost to the goal (h) to determine which nodes to explore first. The total evaluation function is f(n) = g(n) + h(n).
+\end{infobox}
+
+\subsection{Implementation of Bottles Class}
+
+The \texttt{Bottles} class represents the state of the bottles in the problem. It has the following key features:
+
+\begin{itemize}
+    \item It stores the current volumes of water in each bottle, the maximum capacities of each bottle, and the target volume.
+    \item It implements a \texttt{getHValue()} method that returns the heuristic value for the current state, which is the minimum difference between any bottle's volume and the target volume.
+    \item It provides methods to check if the target volume has been achieved and to compare bottle states.
+\end{itemize}
+
+\subsection{Implementation of Actions Enum}
+
+The \texttt{Actions} enum defines the allowed actions in the bottle problem:
+
+\begin{itemize}
+    \item \texttt{FILL}: Fill a bottle completely
+    \item \texttt{EMPTY}: Empty a bottle completely
+    \item \texttt{POUR}: Pour water from one bottle to another
+\end{itemize}
+
+The enum also provides static methods to create action strings for specific bottles and to parse action strings.
+
+\subsection{Implementation of BottleProblem}
+
+The \texttt{BottleProblem} class implements the Problem interface for the bottle problem. The key aspects of this implementation are:
+
+\begin{itemize}
+    \item The initial state has all bottles empty.
+    \item The goal is reached when any bottle contains exactly the target volume of water.
+    \item The \texttt{getActions} method generates all possible actions for the current state based on the volumes and capacities of the bottles.
+    \item The \texttt{getNextState} method applies an action to a state to produce a new state.
+    \item The cost of any action is 1.
+\end{itemize}
+
+\subsection{Implementation of A* Search}
+
+The \texttt{AStarSearch} class extends \texttt{AbstractTreeSearch} to implement the A* search algorithm. The key aspects of this implementation are:
+
+\begin{itemize}
+    \item It uses an ArrayList for the frontier.
+    \item The \texttt{chooseLeafNode} method selects the node with the minimum f-value, where f = g + h (g is the path cost and h is the heuristic value).
+    \item It maintains a set of visited states to ensure that only new states are added to the frontier.
+    \item The \texttt{expand} method is overridden to check if states have been visited before adding them to the frontier.
+\end{itemize}
+
+\subsection{Testing the Bottle Problem}
+
+To test the bottle problem, a test class was created to create a problem instance with two bottles of capacities 4 and 3, and a target volume of 2. The A* search algorithm was used to find a solution.
+
+When run, this test successfully found a path to measure exactly 2 units of water using the two bottles. The solution involved a sequence of filling, emptying, and pouring actions.
+
+\section{A* Algorithm Improvements}
+
+\begin{infobox}{Why Improve A*?}
+While A* is already an efficient algorithm, it can be further optimized to handle complex problems more effectively. Improvements such as better node selection, closed list management, and path updating can significantly enhance its performance and solution quality.
+\end{infobox}
+
+The A* algorithm was further improved to better handle the search process. The key improvements made to the algorithm are:
+
+\subsection{Enhanced Node Selection}
+
+The node selection process in A* was enhanced to consider both the path cost and the heuristic value:
+
+\begin{itemize}
+    \item The \texttt{chooseLeafNode} method now uses both the \texttt{getPathCost()} function (g-value) and the heuristic value (h-value) from the \texttt{getHValue()} method.
+    \item The combined value (f = g + h) is used to select the most promising node for expansion.
+    \item This ensures that the algorithm balances between finding the shortest path and moving toward the goal.
+\end{itemize}
+
+\subsection{Closed List Implementation}
+
+A closed list was implemented to keep track of visited nodes:
+
+\begin{itemize}
+    \item Selected nodes are added to a closed list after being removed from the frontier.
+    \item The closed list prevents the algorithm from revisiting states that have already been explored.
+    \item This improves efficiency by avoiding redundant explorations.
+\end{itemize}
+
+\subsection{Improved Node Expansion}
+
+The node expansion process was improved to handle various scenarios:
+
+\begin{itemize}
+    \item When a new state is generated, the algorithm checks if it exists in the closed list or the frontier.
+    \item If the state is in the closed list with a higher path cost, it is removed from the closed list and added to the frontier with the better path.
+    \item If the state is in the frontier with a higher path cost, it is updated with the better path.
+    \item If the state is new, it is simply added to the frontier.
+    \item This ensures that the algorithm always maintains the best known path to each state.
+\end{itemize}
+
+\subsection{Results}
+
+The improved A* algorithm was tested on the bottle problem and successfully found a solution with 4 steps:
+
+\begin{enumerate}
+    \item \textcolor{sectioncolor}{Fill bottle 1 (0/4, 3/3)}
+    \item \textcolor{subsectioncolor}{Pour from bottle 1 to bottle 0 (3/4, 0/3)}
+    \item \textcolor{sectioncolor}{Fill bottle 1 (3/4, 3/3)}
+    \item \textcolor{subsectioncolor}{Pour from bottle 1 to bottle 0 (4/4, 2/3)}
+\end{enumerate}
+
+The final state has bottle 1 containing exactly 2 units of water, which is the target volume. The algorithm efficiently found this solution by balancing between path cost and heuristic value.
+
+\end{document}
