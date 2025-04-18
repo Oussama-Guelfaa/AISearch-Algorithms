@@ -1,32 +1,32 @@
 # AISearch-Algorithms
 
-Ce projet implémente différentes stratégies de recherche en intelligence artificielle pour résoudre des problèmes de recherche d'états.
+This project implements various search strategies in artificial intelligence to solve state-space search problems.
 
-## Algorithmes implémentés
+## Implemented Algorithms
 
-- **Depth-First Search** : Explore aussi loin que possible le long de chaque branche avant de revenir en arrière.
-- **Uniform Cost Search** : Explore les nœuds par ordre croissant de coût de chemin.
-- **Best First Search** : Utilise une fonction heuristique pour déterminer quels nœuds explorer en premier.
-- **A* Search** : Combine les avantages de Uniform Cost Search et Best First Search.
+- **Depth-First Search**: Explores as far as possible along each branch before backtracking.
+- **Uniform Cost Search**: Explores nodes in order of increasing path cost.
+- **Best First Search**: Uses a heuristic function to determine which nodes to explore first.
+- **A* Search**: Combines the advantages of Uniform Cost Search and Best First Search.
 
-## Problèmes résolus
+## Solved Problems
 
-- **Problème de graphe simple** : Recherche d'un chemin dans un graphe orienté.
-- **Problème des bouteilles** : Mesurer exactement 2 litres d'eau en utilisant deux bouteilles de capacités 4 et 3 litres.
+- **Simple Graph Problem**: Finding a path in a directed graph.
+- **Water Jug Problem**: Measuring exactly 2 liters of water using two jugs with capacities of 4 and 3 liters.
 
-## Structure du projet
+## Project Structure
 
-- `fr.emse.ai.search.core` : Classes de base pour les algorithmes de recherche.
-- `fr.emse.ai.search.simple` : Implémentation du problème de graphe simple.
-- `fr.emse.ai.search.uniform` : Implémentation de Uniform Cost Search.
-- `fr.emse.ai.search.bestfirst` : Implémentation de Best First Search.
-- `fr.emse.ai.search.bottle` : Implémentation du problème des bouteilles.
-- `fr.emse.ai.search.solver` : Implémentations des algorithmes de recherche.
+- `fr.emse.ai.search.core`: Base classes for search algorithms.
+- `fr.emse.ai.search.simple`: Implementation of the simple graph problem.
+- `fr.emse.ai.search.uniform`: Implementation of Uniform Cost Search.
+- `fr.emse.ai.search.bestfirst`: Implementation of Best First Search.
+- `fr.emse.ai.search.bottle`: Implementation of the water jug problem.
+- `fr.emse.ai.search.solver`: Implementations of search algorithms.
 
-## Auteur
+## Author
 
 - **Oussama GUELFAA**
 
-## Superviseur
+## Supervisor
 
 - **KASSI Somlawa Mihia**
